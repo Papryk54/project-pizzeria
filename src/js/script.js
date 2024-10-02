@@ -117,6 +117,9 @@
 			thisProduct.priceElem = thisProduct.element.querySelector(
 				select.menuProduct.priceElem
 			);
+			thisProduct.imageWrapper = thisProduct.element.querySelector(
+				select.menuProduct.imageWrapper
+			);
 		}
 
 		initAccordion() {
@@ -174,27 +177,35 @@
 			for (let paramId in thisProduct.data.params) {
 				// determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
 				const param = thisProduct.data.params[paramId];
-
 				// for every option in this category
 				for (let optionId in param.options) {
+					const optionImageClass = `${paramId}-${optionId}`;
+					const optionImage = thisProduct.imageWrapper.querySelector(
+						`.${optionImageClass}`
+					);
 					// determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
 					const option = param.options[optionId];
 					// check if there is param with a name of paramId in formData and if it includes optionId
 					if (formData[paramId] && formData[paramId].includes(optionId)) {
-  
 						// check if the option is not default
 						if (option.default !== true) {
-             	// add option price to price variable
-               price += option.price;
+							// add option price to price variable
+							price += option.price;
+						}
+						if (optionImage) {
+							optionImage.style.display = "block";
 						}
 					} else {
-            // check if the option is default
+						// check if the option is default
 						if (option.default == true) {
 							// reduce price variable
-              price -= option.price;
+							price -= option.price;
 						}
-          }
-        }
+						if (optionImage) {
+							optionImage.style.display = "none";
+						}
+					}
+				}
 			}
 
 			// update calculated price in the HTML
