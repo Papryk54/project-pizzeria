@@ -143,12 +143,11 @@
 	class Cart{
 		constructor(element){
 			const thisCart = this;
-
+			thisCart.data = dataSource;
 			thisCart.products = [];
 
 			thisCart.getElements(element);
 			thisCart.initActions();
-			console.log('new Cart', thisCart);
 		}
 		getElements(element){
 			const thisCart = this;
@@ -158,6 +157,8 @@
 			thisCart.dom.wrapper = element;
 
 			thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+
+			thisCart.dom.productList = select.productList;
 		}
 		initActions(){
 			const thisCart = this;
@@ -165,7 +166,20 @@
 			thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
 });
 		}
-
+		add (menuProduct){
+			const thisCart = this;
+		//  generate HTML based on template
+		 	const generatedHTML = templates.cartProduct(thisCart.data);
+	 	//  create element using utils.createElementFromHTML
+			thisCart.element = utils.createDOMFromHTML(generatedHTML);
+			console.log(generatedHTML)
+		//  find menu container
+		 	const cartContainer = document.querySelector(select.containerOf.cart);
+			console.log(cartContainer)
+		//	add element to menu
+		 	cartContainer.appendChild(thisCart.element);
+			console.log('adding product', menuProduct)
+		}
 	}
 
 	const app = {
@@ -251,6 +265,7 @@
 			const thisProduct = this;
 			thisProduct.amountWidget = new amountWidget(thisProduct.amountWidgetElem);
 			thisProduct.amountWidgetElem.addEventListener('updated', function (event) {
+				event.preventDefault();
 				thisProduct.processOrder();
 			});
 		}
@@ -297,6 +312,7 @@
 			thisProduct.cartButton.addEventListener("click", function (event) {
 				event.preventDefault();
 				thisProduct.processOrder();
+				thisProduct.addToCart();
 			});
 		}
 		processOrder() {
@@ -344,8 +360,57 @@
 			}
 
 			// update calculated price in the HTML
+			thisProduct.priceSingle = price;
 			price *= thisProduct.amountWidget.value;
 			thisProduct.priceElem.innerHTML = price;
+			thisProduct.price = price;
+		}
+		addToCart(){
+			const thisProduct = this;
+			app.cart.add(thisProduct.prepareCartProduct());
+		}
+
+		prepareCartProduct(){
+			const thisProduct = this;
+			const params = thisProduct.prepareCartProductParams()
+			const productSummary = {
+				id: thisProduct.id,
+				name: thisProduct.data.name,
+				amount: thisProduct.amountWidget.value,
+				priceSingle: thisProduct.priceSingle,
+				price: thisProduct.price,
+				params:{params}
+			};
+			return productSummary;
+		}
+		prepareCartProductParams() {
+			const thisProduct = this;
+		
+			const formData = utils.serializeFormToObject(thisProduct.form);
+			const params = {};
+		
+			// for very category (param)
+			for(let paramId in thisProduct.data.params) {
+				const param = thisProduct.data.params[paramId];
+		
+				// create category param in params const eg. params = { ingredients: { name: 'Ingredients', options: {}}}
+				params[paramId] = {
+					label: param.label,
+					options: {}
+				}
+		
+				// for every option in this category
+				for(let optionId in param.options) {
+					const option = param.options[optionId];
+					const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+		
+					if(optionSelected) {
+						params[paramId].options[optionId] = option.label;
+					}
+				}
+			}
+		
+			return params;
 		}
 	}
 	app.init();
