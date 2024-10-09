@@ -82,7 +82,7 @@
 	const templates = {
 		menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
 		// CODE ADDED START
-		cartProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
+		cartProduct: Handlebars.compile(document.querySelector(select.templateOf.cartProduct).innerHTML),
 		// CODE ADDED END
 	};
 
@@ -170,11 +170,10 @@
 		add (menuProduct){
 		const thisCart = this;
 		const generatedHTML = templates.cartProduct(menuProduct);
-		thisCart.element = utils.createDOMFromHTML(generatedHTML);
-		console.log('generated HTML:', generatedHTML)
 		const cartContainer = document.querySelector(select.cart.productList);
-		cartContainer.appendChild(thisCart.element);
-		console.log('adding product', menuProduct);
+		const cartElement = utils.createDOMFromHTML(generatedHTML);
+		cartContainer.appendChild(cartElement);
+    console.log('adding product', menuProduct);
 		}
 
 	}
@@ -364,7 +363,8 @@
 		}
 		addToCart(){
 			const thisProduct = this;
-			app.cart.add(thisProduct.prepareCartProduct());
+			const productSummary = thisProduct.prepareCartProduct();
+			app.cart.add(productSummary);
 		}
 
 		prepareCartProduct(){
@@ -376,14 +376,17 @@
 				amount: thisProduct.amountWidget.value,
 				priceSingle: thisProduct.priceSingle,
 				price: thisProduct.price,
-				params:{params}
+				params: params
 			};
+			console.log(params)
 			return productSummary;
+			
 		}
 		prepareCartProductParams() {
 			const thisProduct = this;
-		
+			console.log("thisProduct.data.params:  ", thisProduct.data.params)
 			const formData = utils.serializeFormToObject(thisProduct.form);
+			console.log("formData: ",formData);
 			const params = {};
 		
 			// for very category (param)
@@ -406,7 +409,7 @@
 					}
 				}
 			}
-		
+		console.log("params: ", params)
 			return params;
 		}
 	}
