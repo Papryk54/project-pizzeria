@@ -82,7 +82,7 @@
 	const templates = {
 		menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
 		// CODE ADDED START
-		cartProduct: Handlebars.compile(document.querySelector(select.templateOf.cartProduct).innerHTML),
+		cartProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
 		// CODE ADDED END
 	};
 
@@ -158,7 +158,8 @@
 
 			thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
 
-			thisCart.dom.productList = select.productList;
+			thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
+
 		}
 		initActions(){
 			const thisCart = this;
@@ -167,19 +168,15 @@
 });
 		}
 		add (menuProduct){
-			const thisCart = this;
-		//  generate HTML based on template
-		 	const generatedHTML = templates.cartProduct(thisCart.data);
-	 	//  create element using utils.createElementFromHTML
-			thisCart.element = utils.createDOMFromHTML(generatedHTML);
-			console.log(generatedHTML)
-		//  find menu container
-		 	const cartContainer = document.querySelector(select.containerOf.cart);
-			console.log(cartContainer)
-		//	add element to menu
-		 	cartContainer.appendChild(thisCart.element);
-			console.log('adding product', menuProduct)
+		const thisCart = this;
+		const generatedHTML = templates.cartProduct(menuProduct);
+		thisCart.element = utils.createDOMFromHTML(generatedHTML);
+		console.log('generated HTML:', generatedHTML)
+		const cartContainer = document.querySelector(select.cart.productList);
+		cartContainer.appendChild(thisCart.element);
+		console.log('adding product', menuProduct);
 		}
+
 	}
 
 	const app = {
