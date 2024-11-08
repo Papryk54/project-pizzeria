@@ -57,3 +57,5 @@ Handlebars.registerHelper('joinValues', function(input, options) {
   return '';
 });
 
+export default utils;
+
