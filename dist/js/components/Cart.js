@@ -1,6 +1,6 @@
 import {select, classNames, settings, templates} from "../settings.js";
 import utils from '../utils.js';
-import CartProduct from "./Product.js";
+import CartProduct from "./CartProduct.js";
 
 class Cart {
   constructor(element) {
@@ -87,9 +87,6 @@ class Cart {
       .then(function (response) {
         return response.json();
       })
-      .then(function (parsedResponse) {
-        return parsedResponse.json();
-      });
   }
 
   add(menuProduct) {
