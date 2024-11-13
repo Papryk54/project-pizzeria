@@ -82,7 +82,7 @@
       > img {
         @include center();
         height: auto;
-        opacity: 0;
+        opacity: 1;
         transition: opacity 500ms;
   
         &.active {
