@@ -508,7 +508,7 @@ input.error, select.error {
   top: 50%;
   transform: translate(-50%, -50%);
   height: auto;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 500ms;
 }
 .product__images > img.active {
