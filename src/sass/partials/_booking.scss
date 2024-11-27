@@ -198,3 +198,7 @@
     @include flex(row, flex-start, space-between);
     margin: ($base-size * 4) auto;
   }
+
+  .floor-plan .table.tableSelected{ 
+    background: #78e08f;
+  }
