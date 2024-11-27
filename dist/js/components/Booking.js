@@ -269,7 +269,6 @@ class Booking {
 	getStarters() {
 		const starters = [];
 	
-		// Pobierz checkboxy
 		const waterCheckbox = document.getElementById('water');
 		const breadCheckbox = document.getElementById('bread');
 
@@ -280,7 +279,7 @@ class Booking {
 			starters.push('bread');
 		}
 	console.log("startery:", starters)
-		return starters;  // Zwróć tablicę z zaznaczonymi starterami
+		return starters;
 	}
 
 	sendBooking() {
