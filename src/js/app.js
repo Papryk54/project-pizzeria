@@ -2,7 +2,11 @@ import { settings, select, classNames } from "./settings.js";
 import Product from "./components/Product.js";
 import Cart from "./components/Cart.js";
 import Booking from "./components/Booking.js";
+import Home from "./components/Home.js";
 
+document.addEventListener("DOMContentLoaded", () => {
+	new Home();
+});
 const app = {
 	initMenu: function () {
 		const thisApp = this;
@@ -34,6 +38,8 @@ const app = {
 		thisApp.initCart();
 		thisApp.initPages();
 		thisApp.initBooking();
+		thisApp.initOrderButton();
+		thisApp.initBookingTableButton();
 	},
 	initCart: function () {
 		const thisApp = this;
@@ -52,9 +58,8 @@ const app = {
 
 		thisApp.pages = document.querySelector(select.containerOf.pages).children;
 		thisApp.navLinks = document.querySelectorAll(select.nav.links);
-
 		const idFromHash = window.location.hash.replace("#/", "");
-
+		window.location.hash = "#home";
 		let pageMatchingHash = thisApp.pages[0].id;
 
 		for (let page of thisApp.pages) {
@@ -82,6 +87,30 @@ const app = {
 		const bookingContainer = document.querySelector(select.containerOf.booking);
 
 		thisApp.booking = new Booking(bookingContainer);
+	},
+	initOrderButton: function () {
+		const thisApp = this;
+
+		const orderButton = document.getElementById("orderOnlineButton");
+
+		orderButton.addEventListener("click", function (event) {
+			event.preventDefault();
+
+			window.location.hash = "#/order";
+			thisApp.activatePage("order");
+		});
+	},
+	initBookingTableButton: function () {
+		const thisApp = this;
+
+		const orderButton = document.getElementById("bookTableButton");
+
+		orderButton.addEventListener("click", function (event) {
+			event.preventDefault();
+
+			window.location.hash = "#/booking";
+			thisApp.activatePage("booking");
+		});
 	},
 
 	activatePage: function (pageId) {
