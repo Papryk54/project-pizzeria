@@ -2,11 +2,7 @@ import { settings, select, classNames } from "./settings.js";
 import Product from "./components/Product.js";
 import Cart from "./components/Cart.js";
 import Booking from "./components/Booking.js";
-import Home from "./components/Home.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-	new Home();
-});
 const app = {
 	initMenu: function () {
 		const thisApp = this;
@@ -40,6 +36,8 @@ const app = {
 		thisApp.initBooking();
 		thisApp.initOrderButton();
 		thisApp.initBookingTableButton();
+		thisApp.forceDoubleRefresh();
+		thisApp.initHome()
 	},
 	initCart: function () {
 		const thisApp = this;
@@ -59,7 +57,7 @@ const app = {
 		thisApp.pages = document.querySelector(select.containerOf.pages).children;
 		thisApp.navLinks = document.querySelectorAll(select.nav.links);
 		const idFromHash = window.location.hash.replace("#/", "");
-		window.location.hash = "#home";
+		window.location.hash = "#/home";
 		let pageMatchingHash = thisApp.pages[0].id;
 
 		for (let page of thisApp.pages) {
@@ -127,6 +125,16 @@ const app = {
 			);
 		}
 	},
+	forceDoubleRefresh: function() {
+		const hasRefreshed = sessionStorage.getItem("hasRefreshed");
+	
+		if (!hasRefreshed) {
+			sessionStorage.setItem("hasRefreshed", "true");
+			location.reload();
+		} else {
+			sessionStorage.removeItem("hasRefreshed");
+		}
+	}
 };
 
 app.init();
