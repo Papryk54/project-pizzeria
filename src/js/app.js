@@ -2,6 +2,7 @@ import { settings, select, classNames } from "./settings.js";
 import Product from "./components/Product.js";
 import Cart from "./components/Cart.js";
 import Booking from "./components/Booking.js";
+import initHome from "./components/Home.js";
 
 const app = {
 	initMenu: function () {
@@ -36,8 +37,8 @@ const app = {
 		thisApp.initBooking();
 		thisApp.initOrderButton();
 		thisApp.initBookingTableButton();
-		thisApp.forceDoubleRefresh();
-		thisApp.initHome()
+		// thisApp.forceDoubleRefresh();
+		initHome();
 	},
 	initCart: function () {
 		const thisApp = this;
@@ -56,8 +57,13 @@ const app = {
 
 		thisApp.pages = document.querySelector(select.containerOf.pages).children;
 		thisApp.navLinks = document.querySelectorAll(select.nav.links);
-		const idFromHash = window.location.hash.replace("#/", "");
-		window.location.hash = "#/home";
+		let idFromHash = "";
+		if(window.location.hash){
+			idFromHash = window.location.hash.replace("#/", "");
+		} else {
+			window.location.hash = "#/home";
+		}
+		console.log(window.location.hash)
 		let pageMatchingHash = thisApp.pages[0].id;
 
 		for (let page of thisApp.pages) {
