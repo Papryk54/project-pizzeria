@@ -58,12 +58,11 @@ const app = {
 		thisApp.pages = document.querySelector(select.containerOf.pages).children;
 		thisApp.navLinks = document.querySelectorAll(select.nav.links);
 		let idFromHash = "";
-		if(window.location.hash){
+		if (window.location.hash) {
 			idFromHash = window.location.hash.replace("#/", "");
 		} else {
 			window.location.hash = "#/home";
 		}
-		console.log(window.location.hash)
 		let pageMatchingHash = thisApp.pages[0].id;
 
 		for (let page of thisApp.pages) {
@@ -131,16 +130,16 @@ const app = {
 			);
 		}
 	},
-	forceDoubleRefresh: function() {
+	forceDoubleRefresh: function () {
 		const hasRefreshed = sessionStorage.getItem("hasRefreshed");
-	
+
 		if (!hasRefreshed) {
 			sessionStorage.setItem("hasRefreshed", "true");
 			location.reload();
 		} else {
 			sessionStorage.removeItem("hasRefreshed");
 		}
-	}
+	},
 };
 
 app.init();

@@ -191,8 +191,12 @@ class Booking {
 		thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(
 			select.booking.tables
 		);
-		thisBooking.dom.phone = thisBooking.dom.wrapper.querySelector(select.cart.phone);
-		thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(select.cart.address)
+		thisBooking.dom.phone = thisBooking.dom.wrapper.querySelector(
+			select.cart.phone
+		);
+		thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(
+			select.cart.address
+		);
 	}
 
 	initWidgets() {
@@ -226,6 +230,12 @@ class Booking {
 
 		thisBooking.dom.wrapper.addEventListener("click", function (event) {
 			const clickedTable = event.target.closest(select.booking.tables);
+			if (!clickedTable) return;
+
+			if (clickedTable.classList.contains(classNames.booking.tableBooked)) {
+				return;
+			}
+
 			if (clickedTable.classList.contains(classNames.booking.tableSelected)) {
 				clickedTable.classList.remove(classNames.booking.tableSelected);
 			} else {
@@ -268,17 +278,17 @@ class Booking {
 
 	getStarters() {
 		const starters = [];
-	
-		const waterCheckbox = document.getElementById('water');
-		const breadCheckbox = document.getElementById('bread');
+
+		const waterCheckbox = document.getElementById("water");
+		const breadCheckbox = document.getElementById("bread");
 
 		if (waterCheckbox.checked) {
-			starters.push('water');
+			starters.push("water");
 		}
 		if (breadCheckbox.checked) {
-			starters.push('bread');
+			starters.push("bread");
 		}
-	console.log("startery:", starters)
+		console.log("startery:", starters);
 		return starters;
 	}
 
@@ -294,9 +304,9 @@ class Booking {
 			ppl: parseInt(thisBooking.peopleAmountWidget.value),
 			starters: thisBooking.getStarters(),
 			phone: thisBooking.dom.phone.value,
-			address:  thisBooking.dom.address.value,
+			address: thisBooking.dom.address.value,
 		};
-		console.log(payload)
+		console.log(payload);
 
 		//Send payload on server
 
