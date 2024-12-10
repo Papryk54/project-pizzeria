@@ -37,7 +37,6 @@ const app = {
 		thisApp.initBooking();
 		thisApp.initOrderButton();
 		thisApp.initBookingTableButton();
-		// thisApp.forceDoubleRefresh();
 		initHome();
 	},
 	initCart: function () {
